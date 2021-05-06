@@ -58,9 +58,10 @@ class UI{
         const alert = document.createElement('div');
         alert.className = `alert alert-${alert_type}`;
         alert.innerHTML = alert_msg;
-        alert.style = "position:absolute;";
+        alert.style = "position:absolute;width:95%";
 
-        document.querySelector("header").appendChild(alert);
+        document.querySelector('.form-control')
+            .insertBefore(alert, document.querySelector("h2"));
 
         setTimeout(()=>{
             document.querySelector('.alert').remove()}

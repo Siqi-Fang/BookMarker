@@ -112,7 +112,7 @@ document.querySelector('ul').addEventListener('click',
       // remove from storage
         Store.removeWeb(e.target.parentElement.firstChild.nextSibling.getAttribute('id'));
     }
-    //Go to Event (Opens in NewTab)
+    //GoTo Event (Opens in NewTab)
     if (e.target.tagName.toLowerCase() === 'a') {
         window.open(e.target.getAttribute('href'), '_blank');
     }
@@ -126,9 +126,12 @@ document.querySelector("#form-submit").addEventListener('click',
     const siteUrl = document.querySelector('#site-url').value;
 
     // check for completion 
-    if(siteName == ''||checkUrl(siteUrl)){
+    if(siteName == ''||siteUrl == ''){
         UI.showAlert("Please fill in all fields!",'danger');
-    }else{
+    }else if(!checkUrl(siteUrl)){
+        UI.showAlert("Please enter a valid url!",'danger')
+    }
+    else{
     // Put in Storage
     const newWeb = new Websites(siteName,siteUrl);
     UI.add_link(newWeb);
@@ -143,5 +146,12 @@ document.querySelector("#form-submit").addEventListener('click',
  * @param {string} url 
  */
 const checkUrl = (url) => {
-    return url =='';
+    // from Devshed 
+    var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+    return !!pattern.test(url);//return false is url is NOT valid
 }

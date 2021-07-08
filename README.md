@@ -8,5 +8,5 @@ Booklist used table for list in the UI, here we used ul. My considerations:
 Ideas:
   - [x] Check for valid url.
   - [ ] Touch up UI.
-  - [ ] Editor: selecting multiple wibsites and apply action.
+  - [x] Editor: selecting multiple wibsites and apply action.
   - [ ] Website folder.

@@ -6,14 +6,17 @@
     <title>My Bookmarker</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-</head>
+
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    </head>
 <body>
 <header>
    <h1 class="m-4">My BookMarker</h2>
 </header>
 
 <div class="container" style="max-width: 600px; text-align: center;">
-    <div class="form-control bg-light" style="position:relative;">
+    <div class="form-control bg-light" style="position:relative;margin-bottom: 15px;">
         <h2 class="m-3" style="color: rgba(7, 4, 4, 0.685);">Bookmark Your Favorite Sites!</h1>
       <label for="site-name" class="form-label">Site Name</label>
       <div class="input-group mb-2 col-sm-2">
@@ -26,15 +29,21 @@
       </div>
       <input type="submit" id="form-submit" class="btn btn-primary mb-3 w-75" value="Submit">
     </div>
-
-    <!-- <div class="card mt-2 bg-light" id="web-list"> -->
-    <ul class="list-group mt-3" id="web-list"
-        style="list-style: none; max-width: 600px;">
-
+<!-- BookMarks Starts Here -->
+    <div id="edit-bar" class="form-control bg-light mb-0">
+        <input id="edit-btn" type="button" class="btn btn-link" value="Select">
+        <input id="del-all-btn" type="button" class="btn btn-danger" value="Delete Selected" disabled=true>
+        <input id="open-all-btn" type="button" class="btn btn-success" value="Open Selected" disabled=true>
+    </div>
+    <ul class="list-group mt-0" id="web-list"
+    style="list-style: none; max-width: 600px">
     </ul>
+
 </div>
+<!-- container ends here -->
 
 
 <script src="main.js"></script>
+
 </body>
 </html>

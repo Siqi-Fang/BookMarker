@@ -69,11 +69,19 @@ class UI{
         }
     /**
      * delete a website from UI
-     * @param {e.target} element e.target==<li>
+     * @param {e.target} element the del-btn
      */
     static delete_link(element){
         element.parentElement.parentElement.remove();
     }
+    /**
+     * delete a website from UI
+     * @param {li} element 
+     */
+    static group_delete(element){
+        element.remove();
+    }
+
     /**
      * Add a website to UI
      * @param {object} web Website
@@ -83,15 +91,16 @@ class UI{
         let row = document.createElement('li');
 
         row.innerHTML = `
-        <li class="list-group-item mt-1" style="text-align:left">
-            <span class="fs-3">
-            ${web.name}</span>
-            <span style="float:right">
+        <li class="list-group-item mt-1" style="text-align:left" id="web-list-item">
+            <input type="checkbox" class="custom-control-input" id="web-list-checkbox" style="visibility:hidden">
+            
+            <span class="fs-3">${web.name}</span>
+            <span id="btns" style="float:right">
               <a id="${web.url}"
                  href="https://${web.url}" class="btn btn-success ">
                  Go to</a>
-              <input id="del-btn" type="button" class="btn btn-danger" value="Delete">
-            </span>
+              <input id="del-btn" type="button" class="btn btn-danger" value="Delete">          
+              </span>
         </li>
         `
         list.appendChild(row);
@@ -105,13 +114,13 @@ document.addEventListener('DOMContentLoaded', UI.displayWebs()) ;
   ????I would mess up the storage if I add event on the del button */
 document.querySelector('ul').addEventListener('click',
   (e) => {
-    e.preventDefault();
-    //delete event
+    // e.preventDefault(); 
+    //Delete event
     if(e.target.getAttribute('id')==='del-btn'){
       // remove from page 
       UI.delete_link(e.target);
       // remove from storage
-        Store.removeWeb(e.target.parentElement.firstChild.nextSibling.getAttribute('id'));
+      Store.removeWeb(e.target.parentElement.firstChild.nextSibling.getAttribute('id'));
     }
     //GoTo Event (Opens in NewTab)
     if (e.target.tagName.toLowerCase() === 'a') {
@@ -141,6 +150,42 @@ document.querySelector("#form-submit").addEventListener('click',
     }
   }
 );
+
+// EDIT Events 
+//Enbale&Disable Edit
+document.querySelector("#edit-btn").addEventListener('click',
+  (e) => {
+    var visibility = document.querySelector("#web-list-checkbox")
+    .getAttribute("style").substring(11);
+    // makes all checkboxes visible
+    if (visibility == "hidden") {
+        document.querySelectorAll("#web-list-checkbox").forEach(checkbox =>
+        checkbox.setAttribute("style", "visibility:visible"))
+        document.querySelector("#del-all-btn").disabled = false;
+        document.querySelector("#open-all-btn").disabled = false;
+    }
+    else{//hides checkboxes
+        document.querySelectorAll("#web-list-checkbox").forEach(checkbox =>
+        checkbox.setAttribute("style", "visibility:hidden"))
+        //disable group action buttons
+        document.querySelector("#del-all-btn").disabled = true;
+        document.querySelector("#open-all-btn").disabled = true;
+        };    
+});
+
+//DeletAll 
+document.querySelector("#del-all-btn").addEventListener('click',
+  (e) => {
+    var websites = document.querySelectorAll("#web-list-item");
+
+    websites.forEach(website=>{
+        if(website.querySelector("#web-list-checkbox").checked==true){
+          UI.group_delete(website);
+          Store.removeWeb(website.querySelector('a').getAttribute('id'));
+        };
+    })
+});
+
 
 /**
  * Check for valid url form

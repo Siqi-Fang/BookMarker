@@ -99,7 +99,8 @@ class UI{
               <a id="${web.url}"
                  href="https://${web.url}" class="btn btn-success ">
                  Go to</a>
-              <input id="del-btn" type="button" class="btn btn-danger" value="Delete">          
+              <input id="del-btn" type="button" class="btn btn-danger" value="Delete">
+              <input id="edit-btn" type="button" class="btn btn-link" value="Edit">
               </span>
         </li>
         `
@@ -159,8 +160,10 @@ document.querySelector("#edit-btn").addEventListener('click',
     .getAttribute("style").substring(11);
     // makes all checkboxes visible
     if (visibility == "hidden") {
-        document.querySelectorAll("#web-list-checkbox").forEach(checkbox =>
-        checkbox.setAttribute("style", "visibility:visible"))
+        document.querySelectorAll("#web-list-checkbox").forEach(checkbox =>{
+          checkbox.checked = false;
+          checkbox.setAttribute("style", "visibility:visible")});
+        
         document.querySelector("#del-all-btn").disabled = false;
         document.querySelector("#open-all-btn").disabled = false;
     }
@@ -185,6 +188,18 @@ document.querySelector("#del-all-btn").addEventListener('click',
         };
     })
 });
+
+//Open All
+document.querySelector("#open-all-btn").addEventListener('click',
+    (e) => {
+        var websites = document.querySelectorAll("#web-list-item");
+
+        websites.forEach(website => {
+            if (website.querySelector("#web-list-checkbox").checked == true) {
+                window.open('https://'+website.querySelector('a').getAttribute('id'), '_blank')
+            };
+        })
+    });
 
 
 /**

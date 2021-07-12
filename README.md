@@ -6,7 +6,9 @@ Booklist used table for list in the UI, here we used ul. My considerations:
   2. No need for showing attributes(just the website name)
 
 Ideas:
-  - [ ] Check for valid url.
+  - [x] Check for valid url.
   - [ ] Touch up UI.
-  - [ ] Editor: selecting multiple wibsites and apply action.
+  - [x] Editor: selecting multiple wibsites and apply action.
   - [ ] Website folder.
+
+Note: localstorage empty object issue fixed by calling localStorage.clear. Cause of the bug unknown.

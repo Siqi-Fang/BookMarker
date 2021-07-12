@@ -10,10 +10,11 @@ class Websites{
 class Store{
     /**
      * Loads local storage, return JSON array of Websites
+     * @returns JSON array of websites
      */
     static getWebs(){
         let webs;
-        if(localStorage.getItem('webs')===null){
+        if(localStorage.getItem('webs') === null){
             webs = [];
         }else{
             webs = JSON.parse(localStorage.getItem('webs'));
@@ -39,6 +40,22 @@ class Store{
             return web.url !== url;
         });
         localStorage.setItem('webs', JSON.stringify(webs));
+    }
+    /**
+        * edit website information in local storage
+        * @param {string} currUrl -Url of the bookmark editing
+        * @param {string} newName  
+        * @param {string} newUrl
+        */
+    static editWeb(currUrl, newName, newUrl){
+        let webs = this.getWebs();
+        webs.forEach((web)=>{
+            if(web.url === currUrl){
+                web.url = newUrl;
+                web.name = newName;
+            };
+        localStorage.setItem('webs', JSON.stringify(webs));
+        });
     }
 }
 //++++++++++++ UI Class +++++++++++++//
@@ -94,24 +111,34 @@ class UI{
         <li class="list-group-item mt-1" style="text-align:left" id="web-list-item">
             <input type="checkbox" class="custom-control-input" id="web-list-checkbox" style="visibility:hidden">
             
-            <span class="fs-3">${web.name}</span>
+            <span class="fs-3" id="curr-name">${web.name}</span>
             <span id="btns" style="float:right">
               <a id="${web.url}"
                  href="https://${web.url}" class="btn btn-success ">
                  Go to</a>
-              <input id="del-btn" type="button" class="btn btn-danger" value="Delete">          
+              <input id="del-btn" type="button" class="btn btn-danger" value="Delete">
+              <input id="edit-btn" type="button" class="btn btn-link" 
+              value="Edit">
               </span>
         </li>
         `
         list.appendChild(row);
     }
+    /**
+     * Edit a website on UI
+     * @param {li} item -the li of the target of edit
+     */
+    static edit_link(item,newName){
+        item.querySelector("#curr-name").innerHTML = newName;
+    }
+
 
 }
 
 //++++++++++++ Events +++++++++++++//
 document.addEventListener('DOMContentLoaded', UI.displayWebs()) ;
-/* TODO:
-  ????I would mess up the storage if I add event on the del button */
+
+//BookMark Operations
 document.querySelector('ul').addEventListener('click',
   (e) => {
     // e.preventDefault(); 
@@ -126,8 +153,13 @@ document.querySelector('ul').addEventListener('click',
     if (e.target.tagName.toLowerCase() === 'a') {
         window.open(e.target.getAttribute('href'), '_blank');
     }
+    //Edit Event
+    if (e.target.getAttribute("id") === 'edit-btn') {
+        editBookmark(e);
+    }
 });
 
+//Add Bookmark
 document.querySelector("#form-submit").addEventListener('click',
   (e) => {
     e.preventDefault();
@@ -151,16 +183,18 @@ document.querySelector("#form-submit").addEventListener('click',
   }
 );
 
-// EDIT Events 
-//Enbale&Disable Edit
-document.querySelector("#edit-btn").addEventListener('click',
+// Group Events 
+// Enbale&Disable Group Edit
+document.querySelector("#edit-all-btn").addEventListener('click',
   (e) => {
     var visibility = document.querySelector("#web-list-checkbox")
     .getAttribute("style").substring(11);
     // makes all checkboxes visible
     if (visibility == "hidden") {
-        document.querySelectorAll("#web-list-checkbox").forEach(checkbox =>
-        checkbox.setAttribute("style", "visibility:visible"))
+        document.querySelectorAll("#web-list-checkbox").forEach(checkbox =>{
+          checkbox.checked = false;
+          checkbox.setAttribute("style", "visibility:visible")});
+        
         document.querySelector("#del-all-btn").disabled = false;
         document.querySelector("#open-all-btn").disabled = false;
     }
@@ -186,7 +220,53 @@ document.querySelector("#del-all-btn").addEventListener('click',
     })
 });
 
+//Open All
+document.querySelector("#open-all-btn").addEventListener('click',
+    (e) => {
+        var websites = document.querySelectorAll("#web-list-item");
 
+        websites.forEach(website => {
+            if (website.querySelector("#web-list-checkbox").checked == true) {
+                window.open('https://'+website.querySelector('a').getAttribute('id'), '_blank')
+            };
+        })
+    });
+
+//Edit Function
+const editBookmark = (e) => {
+    const web = e.target.parentElement.parentElement; 
+    var site_name = document.querySelector("#site-name-new");
+    var url = document.querySelector("#site-url-new");
+    //default configurations
+    document.querySelector("#edit-popup").setAttribute("style", "visibility:visible");
+    site_name.setAttribute("value", web.querySelector("#curr-name").innerHTML);
+    url.setAttribute("value", web.querySelector("a").getAttribute("id"));
+    //cancel 
+    document.querySelector("#edit-cancel").addEventListener("click", () => {
+        document.querySelector("#edit-popup").setAttribute("style", "visibility:hidden");
+    })
+    //Submit
+    document.querySelector("#edit-submit").addEventListener("click", () => {
+        updateBookmark(web,document.querySelector("#site-name-new").value,
+                       document.querySelector("#site-url-new").value);
+        document.querySelector("#edit-popup").setAttribute("style", "visibility:hidden");
+    })
+}
+    
+const updateBookmark = (curr_web, siteName, siteUrl) =>{
+    if (siteName == '' || siteUrl == '') {
+        UI.showAlert("Please fill in all fields!", 'danger');} 
+    else if (!checkUrl(siteUrl)) {
+        UI.showAlert("Please enter a valid url!", 'danger')
+    }
+    else {
+       // Edit
+        const curr_url = curr_web.querySelector("a").getAttribute('id');
+        UI.edit_link(curr_web, siteName);
+        Store.editWeb(curr_url,siteName,siteUrl);
+        UI.showAlert("Change completed!", 'success');
+    }
+}
 /**
  * Check for valid url form
  * @param {string} url 

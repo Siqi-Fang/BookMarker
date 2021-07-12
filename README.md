@@ -10,3 +10,5 @@ Ideas:
   - [ ] Touch up UI.
   - [x] Editor: selecting multiple wibsites and apply action.
   - [ ] Website folder.
+
+Note: localstorage empty object issue fixed by calling localStorage.clear. Cause of the bug unknown.

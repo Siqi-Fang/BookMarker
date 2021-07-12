@@ -40,9 +40,8 @@
     style="list-style: none; max-width: 600px">
     </ul>
     <!-- Edit PopUp window -->
-    <div id="edit-popup" class="form form-control w-50 m-auto" 
-        style="position: inherit; top:-220px; right:-120px; 
-        visibility:visible">
+    <div id="edit-popup" class="form form-control w-50 m-auto bg-light" 
+        style="position: relative; visibility: hidden;">
         <h4>Edit Bookmark</h4>
         <label for="site-name-new">Site Name</label>
         <input type="text" class="form-control" id="site-name-new" placeholder="">
@@ -52,9 +51,10 @@
          <span class="input-group-text">https://</span>
          <input type="text" class="form-control" id="site-url-new" placeholder="">
         </div>
-        <button type="submit" class="btn btn-success" id="edit-submit">Submit</button>
-        <button type="submit" class="btn btn-warning" id="edit-cancel">Cancel</button>
+        <button type="submit" class="btn btn-success" id="edit-submit">Save Changes</button>
+        <button type="submit" class="btn btn-dark" id="edit-cancel">Cancel</button>
     </div>
+
 </div> <!-- bookmark ends here -->
 </div>
 <!-- container ends here -->

@@ -238,7 +238,13 @@ const editBookmark = (e) => {
     var site_name = document.querySelector("#site-name-new");
     var url = document.querySelector("#site-url-new");
     //default configurations
-    document.querySelector("#edit-popup").setAttribute("style", "visibility:visible");
+    const popup = document.querySelector("#edit-popup");
+    popup.style.visibility = 'visible';
+    popup.style.float = 'right';
+    // console.log(popup.parentElement);
+    console.log(popup);
+    console.log(popup.parentElement);
+
     site_name.setAttribute("value", web.querySelector("#curr-name").innerHTML);
     url.setAttribute("value", web.querySelector("a").getAttribute("id"));
     //cancel 
@@ -267,6 +273,7 @@ const updateBookmark = (curr_web, siteName, siteUrl) =>{
         UI.showAlert("Change completed!", 'success');
     }
 }
+
 /**
  * Check for valid url form
  * @param {string} url 

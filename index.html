@@ -30,15 +30,32 @@
       <input type="submit" id="form-submit" class="btn btn-primary mb-3 w-75" value="Submit">
     </div>
 <!-- BookMarks Starts Here -->
+<div id="bookmark">
     <div id="edit-bar" class="form-control bg-light mb-0">
-        <input id="edit-btn" type="button" class="btn btn-link" value="Select">
+        <input id="edit-all-btn" type="button" class="btn btn-link" value="Select">
         <input id="open-all-btn" type="button" class="btn btn-sm btn-success" value="Open Selected" disabled=true>
         <input id="del-all-btn" type="button" class="btn btn-sm btn-danger" value="Delete Selected" disabled=true>
     </div>
     <ul class="list-group mt-0" id="web-list"
     style="list-style: none; max-width: 600px">
     </ul>
+    <!-- Edit PopUp window -->
+    <div id="edit-popup" class="form form-control w-50 m-auto" 
+        style="position: inherit; top:-220px; right:-120px; 
+        visibility:visible">
+        <h4>Edit Bookmark</h4>
+        <label for="site-name-new">Site Name</label>
+        <input type="text" class="form-control" id="site-name-new" placeholder="">
 
+        <label for="site-url-new">URL</label>
+        <div class="input-group mb-4">
+         <span class="input-group-text">https://</span>
+         <input type="text" class="form-control" id="site-url-new" placeholder="">
+        </div>
+        <button type="submit" class="btn btn-success" id="edit-submit">Submit</button>
+        <button type="submit" class="btn btn-warning" id="edit-cancel">Cancel</button>
+    </div>
+</div> <!-- bookmark ends here -->
 </div>
 <!-- container ends here -->
 
